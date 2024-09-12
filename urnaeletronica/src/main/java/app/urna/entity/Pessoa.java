@@ -1,6 +1,6 @@
 package app.urna.entity;
 
-import jakarta.annotation.Nullable;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +17,7 @@ import org.hibernate.validator.constraints.br.CPF;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Pessoa {
+public abstract class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Pessoa {
     @NotBlank(message = "O nome não pode ser nulo nem vazio.")
     private String nomeCompleto;
 
-    @Nullable
+    @Column(nullable = true)  // Especifica que a coluna pode ser nula no banco de dados
     @CPF(message = "CPF Inválido. O formato deve ser 123.456.789.09")
     private String cpf;
 }
