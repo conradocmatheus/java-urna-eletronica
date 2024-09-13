@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -15,7 +15,7 @@ public class Apuracao {
 
     private int totalVotos;
 
-    private List<Candidato> prefeitos;
+    private Map<Candidato, Integer> votosPrefeitos;
 
-    private List<Candidato> vereadores;
+    private Map<Candidato, Integer> votosVereadores;
 }

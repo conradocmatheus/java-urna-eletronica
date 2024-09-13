@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -25,4 +27,10 @@ public class Candidato extends Pessoa {
 
     @Transient
     private String votosApurados;
+
+    @OneToMany(mappedBy = "prefeitoEscolhido")
+    private List<Voto> votosComoPrefeito; // Lista de votos onde o candidato é o prefeito
+
+    @OneToMany(mappedBy = "vereadorEscolhido")
+    private List<Voto> votosComoVereador; // Lista de votos onde o candidato é o vereador
 }
