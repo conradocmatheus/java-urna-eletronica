@@ -1,12 +1,11 @@
 package app.urna.service;
 
-import app.urna.entity.Apuracao;
 import app.urna.entity.Candidato;
 import app.urna.entity.Eleitor;
 import app.urna.entity.Enum.StatusEleitor;
 import app.urna.entity.Voto;
-import app.urna.exception.NotFoundException;
-import app.urna.exception.WrongCandidateException;
+import app.urna.handler.exception.NotFoundException;
+import app.urna.handler.exception.WrongCandidateException;
 import app.urna.repository.EleitorRepository;
 import app.urna.repository.VotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

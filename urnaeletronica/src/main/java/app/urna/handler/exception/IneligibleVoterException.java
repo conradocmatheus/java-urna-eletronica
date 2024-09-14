@@ -1,4 +1,4 @@
-package app.urna.exception;
+package app.urna.handler.exception;
 
 public class IneligibleVoterException extends RuntimeException {
     public IneligibleVoterException(String message) {

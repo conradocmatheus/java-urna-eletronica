@@ -3,8 +3,8 @@ package app.urna.service;
 
 import app.urna.entity.Eleitor;
 import app.urna.entity.Enum.StatusEleitor;
-import app.urna.exception.BussinessException;
-import app.urna.exception.NotFoundException;
+import app.urna.handler.exception.BussinessException;
+import app.urna.handler.exception.NotFoundException;
 import app.urna.repository.EleitorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

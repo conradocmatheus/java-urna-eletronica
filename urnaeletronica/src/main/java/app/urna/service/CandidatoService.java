@@ -2,7 +2,7 @@ package app.urna.service;
 
 import app.urna.entity.Candidato;
 import app.urna.entity.Enum.StatusCandidato;
-import app.urna.exception.NotFoundException;
+import app.urna.handler.exception.NotFoundException;
 import app.urna.repository.CandidatoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

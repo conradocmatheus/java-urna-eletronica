@@ -1,4 +1,4 @@
-package app.urna.exception;
+package app.urna.handler.exception;
 
 public class BussinessException extends RuntimeException {
     public BussinessException(String message) {
