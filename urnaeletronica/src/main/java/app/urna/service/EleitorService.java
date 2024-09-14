@@ -34,11 +34,13 @@ public class EleitorService {
         eleitorRepository.save(eleitor);
     }
 
+    // Salvar Eleitor
     public Eleitor salvarEleitor(Eleitor eleitor) {
         validarStatusEleitor(eleitor);
         return eleitorRepository.save(eleitor);
     }
 
+    // Atualizar Eleitor
     public Eleitor atualizarEleitor(Long id, Eleitor eleitorAtualizado) {
         Eleitor eleitor = eleitorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Eleitor não encontrado"));
