@@ -9,5 +9,5 @@ import java.util.List;
 public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
     List<Candidato> findAllByStatus(StatusCandidato statusCandidato);
 
-    List<Candidato> getAllByFuncao(int i);
+    List<Candidato> findAllByFuncaoAndStatus(int funcao, StatusCandidato status);
 }

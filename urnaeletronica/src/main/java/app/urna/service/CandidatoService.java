@@ -56,11 +56,11 @@ public class CandidatoService {
 
     // Lista os candidatos a vereador
     public List<Candidato> listarCandidatosVereadores() {
-        return candidatoRepository.getAllByFuncao(2);
+        return candidatoRepository.findAllByFuncaoAndStatus(2, StatusCandidato.ATIVO);
     }
 
     // Lista os candidados a prefeito
     public List<Candidato> listarCandidatosPrefeitos() {
-        return candidatoRepository.getAllByFuncao(1);
+        return candidatoRepository.findAllByFuncaoAndStatus(1, StatusCandidato.ATIVO);
     }
 }
