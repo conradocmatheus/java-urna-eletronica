@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CandidatoRepository extends JpaRepository <Candidato,Long>{
+public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
     List<Candidato> findAllByStatus(StatusCandidato statusCandidato);
+
+    List<Candidato> getAllByFuncao(int i);
 }
