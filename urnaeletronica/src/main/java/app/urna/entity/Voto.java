@@ -24,11 +24,11 @@ public class Voto {
     private LocalDateTime dataHora;
 
     @ManyToOne
-    @JoinColumn(name = "prefeito_id", nullable = false) // Define a chave estrangeira para o candidato prefeito
+    @JoinColumn(name = "prefeito_id", nullable = false)
     private Candidato prefeitoEscolhido;
 
     @ManyToOne
-    @JoinColumn(name = "vereador_id", nullable = false) // Define a chave estrangeira para o candidato vereador
+    @JoinColumn(name = "vereador_id", nullable = false)
     private Candidato vereadorEscolhido;
 
     @Column(nullable = false, unique = true)

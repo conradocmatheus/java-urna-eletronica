@@ -1,5 +1,6 @@
 package app.urna.entity;
 
+import app.urna.entity.Enum.StatusCandidato;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -23,14 +24,14 @@ public class Candidato extends Pessoa {
     @NotNull(message = "A Funcao não pode ser nula.")
     private int funcao;
 
-    private String status;
+    private StatusCandidato status;
 
     @Transient
     private String votosApurados;
 
     @OneToMany(mappedBy = "prefeitoEscolhido")
-    private List<Voto> votosComoPrefeito; // Lista de votos onde o candidato é o prefeito
+    private List<Voto> votosComoPrefeito;
 
     @OneToMany(mappedBy = "vereadorEscolhido")
-    private List<Voto> votosComoVereador; // Lista de votos onde o candidato é o vereador
+    private List<Voto> votosComoVereador;
 }
