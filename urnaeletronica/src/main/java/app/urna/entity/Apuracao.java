@@ -15,7 +15,7 @@ public class Apuracao {
 
     private int totalVotos;
 
-    private Map<Candidato, Integer> votosPrefeitos;
+    private Map<Long, Integer> votosPrefeitos;
 
-    private Map<Candidato, Integer> votosVereadores;
+    private Map<Long, Integer> votosVereadores;
 }

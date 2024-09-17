@@ -24,6 +24,8 @@ public class Candidato extends Pessoa {
     @NotNull(message = "A Funcao não pode ser nula.")
     private int funcao;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_candidato")
     private StatusCandidato status;
 
     @Transient

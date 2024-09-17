@@ -3,13 +3,14 @@ package app.urna.controller;
 import app.urna.entity.Eleitor;
 import app.urna.service.EleitorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/eleitores")
+@RequestMapping("/api/eleitores")
 public class EleitorController {
 
     @Autowired
@@ -26,7 +27,7 @@ public class EleitorController {
     @PostMapping
     public ResponseEntity<Eleitor> salvarEleitor(@RequestBody Eleitor eleitor) {
         Eleitor novoEleitor = eleitorService.salvarEleitor(eleitor);
-        return ResponseEntity.ok(novoEleitor); // Retorna 200 OK com o eleitor salvo
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoEleitor);
     }
 
     // Endpoint para atualizar um eleitor existente

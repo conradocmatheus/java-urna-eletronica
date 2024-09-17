@@ -7,6 +7,7 @@ import app.urna.entity.Enum.StatusEleitor;
 import app.urna.entity.Voto;
 import app.urna.handler.exception.NotFoundException;
 import app.urna.handler.exception.WrongCandidateException;
+import app.urna.repository.CandidatoRepository;
 import app.urna.repository.EleitorRepository;
 import app.urna.repository.VotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class VotoService {
     private EleitorRepository eleitorRepository;
 
     @Autowired
+    private CandidatoRepository candidatoRepository;
+
+    @Autowired
     private CandidatoService candidatoService;
 
     // Metodo de voto
@@ -40,8 +44,11 @@ public class VotoService {
             throw new InvalidParameterException("“Eleitor inapto para votacao");
         }
 
-        Candidato candidatoPrefeito = voto.getPrefeitoEscolhido();
-        Candidato candidatoVereador = voto.getVereadorEscolhido();
+        Candidato candidatoPrefeito = candidatoRepository.findById(voto.getPrefeitoEscolhido().getId())
+                .orElseThrow(() -> new NotFoundException("Candidato a prefeito nao encontrado"));
+
+        Candidato candidatoVereador = candidatoRepository.findById(voto.getVereadorEscolhido().getId())
+                .orElseThrow(() -> new NotFoundException("Candidato a vereador nao encontrado"));
 
         // Verifica se o candidato a prefeito e de fato um candidato a prefeito
         if (!(candidatoPrefeito.getFuncao() == 1)){
@@ -75,15 +82,18 @@ public class VotoService {
 
         // Cria um novo objeto de apuracao
         Apuracao apuracao = new Apuracao();
-        Map<Candidato, Integer> votosPrefeitos = new HashMap<>();
-        Map<Candidato, Integer> votosVereadores = new HashMap<>();
+        Map<Long, Integer> votosPrefeitos = new HashMap<>();
+        Map<Long, Integer> votosVereadores = new HashMap<>();
+        int totalVotosPrefeitos = 0;
+        int totalVotosVereadores = 0;
 
         // Conta e seta votos para prefeitos
         for (Candidato candidato : candidatosPrefeitos) {
             // Quantidade de votos do prefeito por id
             int totalVotos = votoRepository.contarVotosPrefeito(candidato.getId());
             // Coloca o prefeito e os seus votos na lista votosPrefeitos
-            votosPrefeitos.put(candidato, totalVotos);
+            votosPrefeitos.put(candidato.getId(), totalVotos);
+            totalVotosPrefeitos += totalVotos; // Soma ao total de votos para prefeitos
             candidato.setVotosApurados(String.valueOf(totalVotos)); // Atribui ao campo transiente
         }
 
@@ -92,21 +102,15 @@ public class VotoService {
             // Quantidade de votos do vereador por id
             int totalVotos = votoRepository.contarVotosVereador(candidato.getId());
             // Coloca o vereador e os seus votos na lista votosVereadores
-            votosVereadores.put(candidato, totalVotos);
+            votosVereadores.put(candidato.getId(), totalVotos);
+            totalVotosVereadores += totalVotos; // Soma ao total de votos para vereadores
             candidato.setVotosApurados(String.valueOf(totalVotos)); // Atribui ao campo transiente
         }
-
-        // Ordena a lista de candidatos a prefeito pelo total de votos
-        candidatosPrefeitos.sort((c1, c2) -> Integer.compare(
-                Integer.parseInt(c2.getVotosApurados()), Integer.parseInt(c1.getVotosApurados())));
-
-        // Ordena a lista de candidatos a vereador pelo total de votos
-        candidatosVereadores.sort((c1, c2) -> Integer.compare(
-                Integer.parseInt(c2.getVotosApurados()), Integer.parseInt(c1.getVotosApurados())));
 
         // Define o resultado da apuração
         apuracao.setVotosPrefeitos(votosPrefeitos);
         apuracao.setVotosVereadores(votosVereadores);
+        apuracao.setTotalVotos(totalVotosPrefeitos + totalVotosVereadores); // Total geral de votos
 
         return apuracao;
     }
