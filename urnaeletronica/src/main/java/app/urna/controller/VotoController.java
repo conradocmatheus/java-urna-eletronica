@@ -24,7 +24,6 @@ public class VotoController {
     public ResponseEntity<String> votar(
             @PathVariable Long idEleitor,
             @RequestBody @Valid Voto voto) {
-
         try {
             // Chama o serviço para registrar o voto
             String hash = votoService.votar(voto, idEleitor);
@@ -36,10 +35,13 @@ public class VotoController {
         }
     }
 
-
-    @GetMapping("/apuracao")
+    @GetMapping("/realizar-apuracao")
     public ResponseEntity<Apuracao> realizarApuracao() {
-        Apuracao apuracao = votoService.realizarApuracao();
-        return ResponseEntity.ok(apuracao);
+        try {
+            Apuracao apuracao = votoService.realizarApuracao();
+            return ResponseEntity.status(HttpStatus.OK).body(apuracao);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }
