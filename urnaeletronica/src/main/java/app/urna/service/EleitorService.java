@@ -7,7 +7,9 @@ import app.urna.handler.exception.BussinessException;
 import app.urna.handler.exception.NotFoundException;
 import app.urna.repository.EleitorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -60,7 +62,11 @@ public class EleitorService {
 
     // Lista os eleitores com o status APTO
     public List<Eleitor> listarEleitores() {
-        return eleitorRepository.findAllByStatus(StatusEleitor.APTO);
+        List<Eleitor> eleitores = eleitorRepository.findAllByStatus(StatusEleitor.APTO);
+        if (eleitores.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum eleitor encontrado");
+        }
+        return eleitores;
     }
 
     // Esse metodo valida o status do eleitor
@@ -82,5 +88,4 @@ public class EleitorService {
             eleitor.setStatus(StatusEleitor.APTO); // Eleitor apto
         }
     }
-
 }
