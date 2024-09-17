@@ -165,4 +165,53 @@ class EleitorServiceTest {
         assertEquals("404 NOT_FOUND \"Nenhum eleitor encontrado\"", exception.getMessage());
         verify(eleitorRepository, times(1)).findAllByStatus(StatusEleitor.APTO);
     }
+
+    @Test
+    void validarStatusEleitor_DeveDefinirStatusPendenteQuandoCpfOuEmailVazio() {
+        // Arrange
+        Eleitor eleitor = new Eleitor();
+        eleitor.setCpf("");
+        eleitor.setEmail("");
+
+        // Act
+        eleitorService.validarStatusEleitor(eleitor);
+
+        // Assert
+        assertEquals(StatusEleitor.PENDENTE, eleitor.getStatus());
+    }
+
+    @Test
+    void validarStatusEleitor_DeveDefinirStatusAptoQuandoNaoHaPendenciasCadastrais() {
+        // Arrange
+        Eleitor eleitor = new Eleitor();
+        eleitor.setCpf("12345678900");
+        eleitor.setEmail("eleitor@email.com");
+        eleitor.setStatus(null);
+
+        // Act
+        eleitorService.validarStatusEleitor(eleitor);
+
+        // Assert
+        assertEquals(StatusEleitor.APTO, eleitor.getStatus());
+    }
+
+    @Test
+    void validarStatusEleitor_NaoDeveDefinirStatusAptoQuandoStatusInativoOuBloqueadoOuVotou() {
+        // Arrange
+        Eleitor eleitor = new Eleitor();
+        eleitor.setCpf("12345678900");
+        eleitor.setEmail("eleitor@email.com");
+
+        eleitor.setStatus(StatusEleitor.INATIVO);
+        eleitorService.validarStatusEleitor(eleitor);
+        assertEquals(StatusEleitor.INATIVO, eleitor.getStatus());
+
+        eleitor.setStatus(StatusEleitor.BLOQUEADO);
+        eleitorService.validarStatusEleitor(eleitor);
+        assertEquals(StatusEleitor.BLOQUEADO, eleitor.getStatus());
+
+        eleitor.setStatus(StatusEleitor.VOTOU);
+        eleitorService.validarStatusEleitor(eleitor);
+        assertEquals(StatusEleitor.VOTOU, eleitor.getStatus());
+    }
 }

@@ -70,7 +70,7 @@ public class EleitorService {
     }
 
     // Esse metodo valida o status do eleitor
-    private void validarStatusEleitor(Eleitor eleitor) {
+    void validarStatusEleitor(Eleitor eleitor) {
         // Variavel que verifica se ha pendencias cadastrais
         boolean eleitorComPendenciasCadastrais = false;
 
