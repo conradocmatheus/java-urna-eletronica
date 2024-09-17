@@ -1,7 +1,9 @@
 package app.urna.controller;
 
 import app.urna.entity.Candidato;
+import app.urna.handler.exception.NotFoundException;
 import app.urna.service.CandidatoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,45 +18,75 @@ public class CandidatoController {
     @Autowired
     private CandidatoService candidatoService;
 
-    // Inativar candidato
-    @PutMapping("/{id}/inativar")
-    public ResponseEntity<Void> inativarCandidato(@PathVariable Long id) {
-        candidatoService.inativarCandidato(id);
-        return ResponseEntity.noContent().build();
+    // Inativar candidato por ID
+    @PutMapping("/inativar/{id}")
+    public ResponseEntity<String> inativarCandidato(@PathVariable Long id) {
+        try {
+            candidatoService.inativarCandidato(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Candidato inativado com sucesso");
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao inativar candidato");
+        }
     }
 
     // Salvar candidato
-    @PostMapping
-    public ResponseEntity<Candidato> salvarCandidato(@RequestBody Candidato candidato) {
-        Candidato candidatoSalvo = candidatoService.salvarCandidato(candidato);
-        return ResponseEntity.status(HttpStatus.CREATED).body(candidatoSalvo);
+    @PostMapping("/salvar")
+    public ResponseEntity<Candidato> salvarCandidato(@RequestBody @Valid Candidato novoCandidato) {
+        try {
+            Candidato candidatoSalvo = candidatoService.salvarCandidato(novoCandidato);
+            return ResponseEntity.status(HttpStatus.CREATED).body(candidatoSalvo);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     // Atualizar candidato
-    @PutMapping("/{id}")
-    public ResponseEntity<Candidato> atualizarCandidato(@PathVariable Long id, @RequestBody Candidato candidatoAtualizado) {
-        Candidato candidatoAtualizadoSalvo = candidatoService.atualizarCandidato(id, candidatoAtualizado);
-        return ResponseEntity.ok(candidatoAtualizadoSalvo);
+    @PutMapping("atualizar/{id}")
+    public ResponseEntity<Candidato> atualizarCandidato(
+            @PathVariable Long id,
+            @RequestBody @Valid Candidato candidatoAtualizado) {
+        try {
+            Candidato candidato = candidatoService.atualizarCandidato(id, candidatoAtualizado);
+            return ResponseEntity.status(HttpStatus.OK).body(candidato);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
-    // Listar candidatos ativos
-    @GetMapping
+    // Lista todos os candidatos ATIVOS
+    @GetMapping("/listar")
     public ResponseEntity<List<Candidato>> listarCandidatos() {
-        List<Candidato> candidatosAtivos = candidatoService.listarCandidatos();
-        return ResponseEntity.ok(candidatosAtivos);
+        try {
+            List<Candidato> candidatos = candidatoService.listarCandidatos();
+            return ResponseEntity.status(HttpStatus.OK).body(candidatos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
-    // Listar candidatos a vereador ativos
-    @GetMapping("/vereadores")
+    // Lista os candidatos a vereador ATIVOS
+    @GetMapping("/listar/vereadores")
     public ResponseEntity<List<Candidato>> listarCandidatosVereadoresAtivos() {
-        List<Candidato> vereadoresAtivos = candidatoService.listarCandidatosVereadoresAtivos();
-        return ResponseEntity.ok(vereadoresAtivos);
+        try {
+            List<Candidato> candidatosVereadores = candidatoService.listarCandidatosVereadoresAtivos();
+            return ResponseEntity.status(HttpStatus.OK).body(candidatosVereadores);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
-    // Listar candidatos a prefeito ativos
-    @GetMapping("/prefeitos")
+    // Lista os candidatos a prefeito ATIVOS
+    @GetMapping("/listar/prefeitos")
     public ResponseEntity<List<Candidato>> listarCandidatosPrefeitosAtivos() {
-        List<Candidato> prefeitosAtivos = candidatoService.listarCandidatosPrefeitosAtivos();
-        return ResponseEntity.ok(prefeitosAtivos);
+        try {
+            List<Candidato> candidatosPrefeitos = candidatoService.listarCandidatosPrefeitosAtivos();
+            return ResponseEntity.status(HttpStatus.OK).body(candidatosPrefeitos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }
