@@ -20,7 +20,7 @@ public class EleitorController {
     @Autowired
     private EleitorService eleitorService;
 
-    // Endpoint para inativar um eleitor
+
     @PutMapping("/inativar/{id}")
     public ResponseEntity<String> inativarEleitor(@PathVariable Long id) {
         try {
@@ -35,7 +35,7 @@ public class EleitorController {
         }
     }
 
-    // Endpoint para salvar um novo eleitor
+
     @PostMapping
     public ResponseEntity<Eleitor> salvarEleitor(@RequestBody @Valid Eleitor novoEleitor) {
         try {
@@ -46,7 +46,7 @@ public class EleitorController {
         }
     }
 
-    // Endpoint para atualizar um eleitor existente
+
     @PutMapping("/{id}")
     public ResponseEntity<Eleitor> atualizarEleitor(
             @PathVariable Long id,
@@ -61,7 +61,7 @@ public class EleitorController {
         }
     }
 
-    // Endpoint que lista eleitores aptos
+
     @GetMapping("/aptos")
     public ResponseEntity<List<Eleitor>> listarEleitoresAptos() {
         try {

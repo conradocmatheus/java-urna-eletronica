@@ -37,4 +37,7 @@ public class Eleitor extends Pessoa {
     @Enumerated(EnumType.STRING)
     @Column(name = "status_eleitor")
     private StatusEleitor status;
+
+    public void setNome(String mariaSouza) {
+    }
 }

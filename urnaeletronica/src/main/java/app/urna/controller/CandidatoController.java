@@ -18,7 +18,7 @@ public class CandidatoController {
     @Autowired
     private CandidatoService candidatoService;
 
-    // Inativar candidato por ID
+
     @PutMapping("/inativar/{id}")
     public ResponseEntity<String> inativarCandidato(@PathVariable Long id) {
         try {
@@ -31,7 +31,7 @@ public class CandidatoController {
         }
     }
 
-    // Salvar candidato
+
     @PostMapping("/salvar")
     public ResponseEntity<Candidato> salvarCandidato(@RequestBody @Valid Candidato novoCandidato) {
         try {
@@ -42,7 +42,7 @@ public class CandidatoController {
         }
     }
 
-    // Atualizar candidato
+
     @PutMapping("atualizar/{id}")
     public ResponseEntity<Candidato> atualizarCandidato(
             @PathVariable Long id,
@@ -57,7 +57,7 @@ public class CandidatoController {
         }
     }
 
-    // Lista todos os candidatos ATIVOS
+
     @GetMapping("/listar")
     public ResponseEntity<List<Candidato>> listarCandidatos() {
         try {
@@ -68,7 +68,7 @@ public class CandidatoController {
         }
     }
 
-    // Lista os candidatos a vereador ATIVOS
+
     @GetMapping("/listar/vereadores")
     public ResponseEntity<List<Candidato>> listarCandidatosVereadoresAtivos() {
         try {
@@ -79,7 +79,6 @@ public class CandidatoController {
         }
     }
 
-    // Lista os candidatos a prefeito ATIVOS
     @GetMapping("/listar/prefeitos")
     public ResponseEntity<List<Candidato>> listarCandidatosPrefeitosAtivos() {
         try {
