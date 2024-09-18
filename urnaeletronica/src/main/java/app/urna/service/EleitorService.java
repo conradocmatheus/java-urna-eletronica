@@ -70,12 +70,13 @@ public class EleitorService {
     }
 
     // Esse metodo valida o status do eleitor
-    private void validarStatusEleitor(Eleitor eleitor) {
+    void validarStatusEleitor(Eleitor eleitor) {
         // Variavel que verifica se ha pendencias cadastrais
         boolean eleitorComPendenciasCadastrais = false;
 
         // Verifica se o eleitor cadastrou email ou cpf
-        if (eleitor.getCpf().isEmpty() || eleitor.getEmail().isEmpty()) {
+        if (eleitor.getCpf() == null || eleitor.getCpf().isEmpty() ||
+                eleitor.getEmail() == null || eleitor.getEmail().isEmpty()) {
             eleitor.setStatus(StatusEleitor.PENDENTE); // Definir status PENDENTE
             eleitorComPendenciasCadastrais = true;
         }

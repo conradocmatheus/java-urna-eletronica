@@ -40,23 +40,28 @@ public class VotoService {
                 .orElseThrow(() -> new NotFoundException("Eleitor nao encontrado"));
 
         // Verifica se o eleitor esta APTO para votar
-        if (!(eleitor.getStatus() == StatusEleitor.APTO)){
-            throw new InvalidParameterException("“Eleitor inapto para votacao");
+        if (!(eleitor.getStatus() == StatusEleitor.APTO)) {
+            throw new InvalidParameterException("Eleitor inapto para votacao");
         }
 
-        Candidato candidatoPrefeito = candidatoRepository.findById(voto.getPrefeitoEscolhido().getId())
+        // Obter o ID do candidato a prefeito do voto
+        Long idPrefeito = voto.getPrefeitoEscolhido().getId();
+        Candidato candidatoPrefeito = candidatoRepository.findById(idPrefeito)
                 .orElseThrow(() -> new NotFoundException("Candidato a prefeito nao encontrado"));
 
-        Candidato candidatoVereador = candidatoRepository.findById(voto.getVereadorEscolhido().getId())
+        // Obter o ID do candidato a vereador do voto
+        Long idVereador = voto.getVereadorEscolhido().getId();
+        Candidato candidatoVereador = candidatoRepository.findById(idVereador)
                 .orElseThrow(() -> new NotFoundException("Candidato a vereador nao encontrado"));
 
+
         // Verifica se o candidato a prefeito e de fato um candidato a prefeito
-        if (!(candidatoPrefeito.getFuncao() == 1)){
+        if (!(candidatoPrefeito.getFuncao() == 1)) {
             throw new WrongCandidateException("O Candidato escolhido nao e um prefeito");
         }
 
         // Verifica se o candidato a vereador e de fato um candidato a vereador
-        if (!(candidatoVereador.getFuncao() == 2)){
+        if (!(candidatoVereador.getFuncao() == 2)) {
             throw new WrongCandidateException("O Candidato escolhido nao e um vereador");
         }
 
